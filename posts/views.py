@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+
 from .models import Post
 from .forms import PostForm
 
@@ -11,6 +13,7 @@ def post_create(request):
         instance = form.save(commit=False)
         # or you can use form.cleaned_data.get('field')
         instance.save()
+        return HttpResponseRedirect(f'/posts/{instance.id}/')
 
     # Capture The Data From the Form (Not Recommend .. add request.POST to PostForm(...) is sugested)
     # if request.method == 'POST':
@@ -57,8 +60,20 @@ def post_list(request):
     # return HttpResponse('List')
 
 
-def post_update(request):
-    return HttpResponse('Update')
+def post_update(request, id):
+    instance = get_object_or_404(Post, id=id)
+    form = PostForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return HttpResponseRedirect(f'/posts/{instance.id}/')
+
+    context = {
+        "title": instance.title,
+        "instance": instance,
+        "form": form
+    }
+    return render(request, 'post_form.html', context)
 
 
 def post_delete(request):
