@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Post
 
@@ -8,11 +8,16 @@ def post_create(request):
     return HttpResponse('Create')
 
 
-def post_detail(request):
+def post_detail(request, id):
+    # this instance will raise an error , we dont want that so, use get_object_or_404
+    # instance = Post.objects.get(id=99)
+
+    instance = get_object_or_404(Post, id=id)  # This will return 404 page default. id not found, not an error
     context = {
-        "title": "Detail"
+        "title": instance.title,
+        "instance": instance
     }
-    return render(request, 'index.html', context)
+    return render(request, 'post_detail.html', context)
     # return HttpResponse('Detail')
 
 
