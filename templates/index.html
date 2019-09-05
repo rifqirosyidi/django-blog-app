@@ -11,8 +11,11 @@
     <p>INDEX VIEW TEMPLATES</p>
 
     {% for object in object_list %}
-        <h4>{{ object.title }}</h4>
-        <small>{{ object.content }}</small>
+        {{ object.title }}<br>
+        {{ object.content }}<br>
+        {{ object.updated }}<br>
+        {{ object.timestamp }}<br>
+        {{ object.id }}<br>
     {% endfor %}
 </body>
 </html>
