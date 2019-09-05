@@ -9,5 +9,10 @@
 </head>
 <body>
     <p>INDEX VIEW TEMPLATES</p>
+
+    {% for object in object_list %}
+        <h4>{{ object.title }}</h4>
+        <small>{{ object.content }}</small>
+    {% endfor %}
 </body>
 </html>
