@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -13,6 +14,7 @@ def post_create(request):
         instance = form.save(commit=False)
         # or you can use form.cleaned_data.get('field')
         instance.save()
+        messages.success(request, "Successfuly Created")
         return HttpResponseRedirect(f'/posts/{instance.id}/')
 
     # Capture The Data From the Form (Not Recommend .. add request.POST to PostForm(...) is sugested)
@@ -66,6 +68,7 @@ def post_update(request, id):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
+        messages.success(request, "Post Updated")
         return HttpResponseRedirect(f'/posts/{instance.id}/')
 
     context = {
