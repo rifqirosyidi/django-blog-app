@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>INDEX VIEW TEMPLATES</p>
+
+    {% for object in object_list %}
+    <a href="{% url 'posts:detail' object.id %}">{{ object.title }}</a><br>
+    {{ object.content }}<br>
+    {{ object.updated }}<br>
+    {{ object.timestamp }}<br>
+    {{ object.id }}<br>
+    {% endfor %}
+
+{% endblock content %}
