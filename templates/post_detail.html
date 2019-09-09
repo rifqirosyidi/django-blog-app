@@ -5,12 +5,12 @@
 {% endblock title%}
 
 {% block content %}
+<div class="col-md-12">
+    <div class="mt-4 mb-4">
+        <h2>{{ instance.title }}</h2>
+        <p><small>{{ instance.timestamp }}</small></p>
+    </div>
 
-<h1>{{ instance.title }}</h1>
-    {{ instance.title }}<br>
-    {{ instance.content }}<br>
-    {{ instance.updated }}<br>
-    {{ instance.timestamp }}<br>
-    {{ instance.id }}<br>
-
+    {{ instance.content|linebreaks }}<br>
+</div>
 {% endblock content%}
