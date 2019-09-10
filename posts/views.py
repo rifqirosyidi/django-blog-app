@@ -71,6 +71,9 @@ def post_list(request):
     if request.user.is_staff or request.user.is_superuser:
         query_list = Post.objects.all()
 
+    search = request.GET.get('search')
+    if search:
+        query_list = query_list.filter(title__icontains=search)
     paginator = Paginator(query_list, 5)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
