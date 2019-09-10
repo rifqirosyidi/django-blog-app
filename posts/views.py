@@ -2,6 +2,7 @@ from urllib.parse import quote_plus
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, Http404
+from django.utils import timezone
 from django.core.paginator import Paginator
 
 from .models import Post
@@ -55,7 +56,8 @@ def post_detail(request, slug):
 
 
 def post_list(request):
-    query_list = Post.objects.all().order_by('-timestamp')
+    query_list = Post.objects.all()  # filter(draft=False).filter(publish__lte=timezone.now())  # all().order_by(
+    # '-timestamp')
     paginator = Paginator(query_list, 5)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
