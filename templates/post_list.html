@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load humanize %}
 
 {% block content %}
 <div class="container m-3 p-2">
@@ -18,7 +17,7 @@
                 <a href="{% url 'posts:detail' object.slug %}" class="btn btn-primary">View</a>
             </div>
             <div class="card-footer">
-                <small class="text-muted">Created at : {{ object.timestamp|naturaltime }}
+                <small class="text-muted">Published at : {{ object.publish }}
                     {% if object.user %}
                         By: {{ object.user }}
                     {% endif %}

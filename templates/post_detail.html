@@ -11,6 +11,9 @@
         <img src="{{ instance.image.url }}" class="img-fluid" alt="">
         {% endif %}
         <h2>{{ instance.title }}</h2>
+        {% if instance.draft %}
+        <span class="text-danger"> Draft </span>
+        {% endif %}
         <p class="text-muted mb-3">Author:
             {% if instance.user %}
                 {{ instance.user }}
@@ -19,7 +22,7 @@
             {% endif %}
         </p>
         <div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-width="" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-        <p><small>{{ instance.timestamp }}</small></p>
+        <p><small>{{ instance.publish }} | {{ instance.publish }}</small></p>
     </div>
 
 <!-- SHARE LINK -->
