@@ -8,6 +8,9 @@
 <div class="col-md-12">
     <div class="mt-4 mb-4">
         <h2>{{ instance.title }}</h2>
+        {% if instance.image %}
+        <img src="{{ instance.image.url }}" class="img-fluid" alt="">
+        {% endif %}
         <p><small>{{ instance.timestamp }}</small></p>
     </div>
 

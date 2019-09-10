@@ -2,24 +2,26 @@
 {% load humanize %}
 
 {% block content %}
-    <div class="container m-3 p-2">
-        <h2>INDEX VIEW TEMPLATES</h2>
-    </div>
-    <div class="row card-deck">
+<div class="container m-3 p-2">
+    <h2>INDEX VIEW TEMPLATES</h2>
+</div>
+<div class="row card-deck">
     {% for object in object_list %}
-        <div class="col-md-12">
-          <div class="card mt-2 mb-2">
-    <!--        <img src="..." class="card-img-top" alt="...">-->
+    <div class="col-md-4">
+        <div class="card mt-2 mb-2">
+            {% if object.image %}
+            <img src="{{ object.image.url }}" class="card-img-top" alt="...">
+            {% endif %}
             <div class="card-body">
-              <h5 class="card-title"><a href="{% url 'posts:detail' object.id %}">{{ object.title }}</a></h5>
+                <h5 class="card-title"><a href="{% url 'posts:detail' object.id %}">{{ object.title }}</a></h5>
                 <p class="card-text">{{ object.content|linebreaks|truncatechars:70 }}</p>
                 <a href="{% url 'posts:detail' object.id %}" class="btn btn-primary">View</a>
             </div>
             <div class="card-footer">
-              <small class="text-muted">Created at :  {{ object.timestamp|naturaltime }}</small>
+                <small class="text-muted">Created at : {{ object.timestamp|naturaltime }}</small>
             </div>
-          </div>
         </div>
+    </div>
     {% endfor %}
 
     <div class="mx-auto">
