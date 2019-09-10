@@ -46,7 +46,7 @@
             <span class="step-links">
                 {% if object_list.has_previous %}
                     <a href="?{{ page_request_var }}=1">&laquo; first</a>
-                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">previous</a>
                 {% endif %}
 
                 <span class="current">
@@ -54,7 +54,7 @@
                 </span>
 
                 {% if object_list.has_next %}
-                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">next</a>
                     <a href="?{{ page_request_var }}={{ object_list.paginator.num_pages }}">last &raquo;</a>
                 {% endif %}
             </span>

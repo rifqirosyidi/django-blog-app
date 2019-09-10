@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, Http404
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from .models import Post
 from .forms import PostForm
@@ -73,8 +74,11 @@ def post_list(request):
 
     search = request.GET.get('search')
     if search:
-        query_list = query_list.filter(title__icontains=search)
-    paginator = Paginator(query_list, 5)
+        query_list = query_list.filter(
+            Q(title__icontains=search) or
+            Q(content__icontains=search)
+        ).distinct()
+    paginator = Paginator(query_list, 6)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
     query_set = paginator.get_page(page)
