@@ -21,6 +21,7 @@ def post_create(request):
     if form.is_valid():
         instance = form.save(commit=False)
         # or you can use form.cleaned_data.get('field')
+        instance.user = request.user
         instance.save()
         messages.success(request, "Successfuly Created")
         return HttpResponseRedirect(f'/posts/{instance.slug}/')
@@ -30,8 +31,10 @@ def post_create(request):
     #     print(request.POST.get('title'))
     #     print(request.POST.get('content'))
 
+    button_variables = "Create"
     context = {
-        'form': form
+        'form': form,
+        'button_variables': button_variables
     }
     return render(request, 'post_form.html', context)
 
@@ -83,9 +86,11 @@ def post_update(request, slug):
         messages.success(request, "Post Updated")
         return HttpResponseRedirect(f'/posts/{instance.slug}/')
 
+    button_variables = "Update"
     context = {
         "title": instance.title,
         "instance": instance,
+        "button_variables": button_variables,
         "form": form
     }
     return render(request, 'post_form.html', context)

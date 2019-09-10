@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -6,6 +7,7 @@ from django.db.models.signals import pre_save
 
 # Create your models here.
 class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)
     slug = models.SlugField(unique=True)
     image = models.FileField(null=True, blank=True)

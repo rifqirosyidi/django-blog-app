@@ -8,6 +8,13 @@
 <div class="col-lg-6 col-md-12 col-sm-12">
     <div class="mt-4 mb-4">
         <h2>{{ instance.title }}</h2>
+        <p class="text-muted mb-3">Author:
+            {% if instance.user %}
+                {{ instance.user }}
+            {% else %}
+                Anonymous
+            {% endif %}
+        </p>
         {% if instance.image %}
         <img src="{{ instance.image.url }}" class="img-fluid" alt="">
         {% endif %}
