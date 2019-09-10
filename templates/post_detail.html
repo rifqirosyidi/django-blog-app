@@ -14,6 +14,9 @@
         {% if instance.draft %}
         <span class="text-danger"> Draft </span>
         {% endif %}
+        {% if instance.publish > today %}
+        <span class="text-danger"> Future Post </span>
+        {% endif %}
         <p class="text-muted mb-3">Author:
             {% if instance.user %}
                 {{ instance.user }}

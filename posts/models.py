@@ -11,7 +11,7 @@ from django.db.models.signals import pre_save
 # Post.objects.all()
 # Post.objects.create()
 class PostManager(models.Manager):
-    def all(self, *args, **kwargs):
+    def active(self, *args, **kwargs):
         return super(PostManager, self).filter(draft=False).filter(publish__lte=timezone.now())
 
 

@@ -43,21 +43,34 @@ def post_create(request):
 def post_detail(request, slug):
     # this instance will raise an error , we dont want that so, use get_object_or_404
     # instance = Post.objects.get(id=99)
+    today = timezone.now().date()
 
     instance = get_object_or_404(Post, slug=slug)  # This will return 404 page default. id not found, not an error
+    if instance.publish > timezone.now().date() or instance.draft:
+        if not request.user.is_authenticated or not request.user.is_staff or not request.user.is_superuser:
+            raise Http404
+
     share_string = quote_plus(instance.content)
     context = {
         "title": instance.title,
         "instance": instance,
         "share_string": share_string,
+        "today": today
     }
     return render(request, 'post_detail.html', context)
     # return HttpResponse('Detail')
 
 
 def post_list(request):
-    query_list = Post.objects.all()  # filter(draft=False).filter(publish__lte=timezone.now())  # all().order_by(
+    # Using Model Manager
+    today = timezone.now().date()
+    query_list = Post.objects.active()
+    # filter(draft=False).filter(publish__lte=timezone.now())  # all().order_by(
     # '-timestamp')
+
+    if request.user.is_staff or request.user.is_superuser:
+        query_list = Post.objects.all()
+
     paginator = Paginator(query_list, 5)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
@@ -66,7 +79,8 @@ def post_list(request):
     context = {
             "title": "My User List",
             "object_list": query_set,
-            "page_request_var": page_request_var
+            "page_request_var": page_request_var,
+            "today": today
         }
 
     return render(request, 'post_list.html', context)
