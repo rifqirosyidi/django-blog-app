@@ -20,11 +20,11 @@
     Facebook
     </a>
 
-    <a href="https://twitter.com/home?status={{ share_string|truncate:80 }}%20{{ request.build_absolute_uri }}">
+    <a href="https://twitter.com/home?status={{ share_string|truncatechars:80 }}%20{{ request.build_absolute_uri }}">
     Twitter
     </a>
 
-    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ instance.title }}&summary={{ share_string|truncate:80 }}&source={{ request.build_absolute_uri }}">
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ instance.title }}&summary={{ share_string|truncatechars:80 }}&source={{ request.build_absolute_uri }}">
     Linkedin
     </a>
 

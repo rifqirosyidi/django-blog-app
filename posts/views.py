@@ -1,7 +1,7 @@
 from urllib.parse import quote_plus
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.core.paginator import Paginator
 
 from .models import Post
@@ -10,6 +10,12 @@ from .forms import PostForm
 
 # Create your views here.
 def post_create(request):
+
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
+    if not request.user.is_authenticated:
+        raise Http404
     # request files when you have image field / files to upload
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -62,6 +68,13 @@ def post_list(request):
 
 
 def post_update(request, slug):
+
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
+    if not request.user.is_authenticated:
+        raise Http404
+
     instance = get_object_or_404(Post, slug=slug)
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
@@ -79,6 +92,13 @@ def post_update(request, slug):
 
 
 def post_delete(request, slug):
+
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
+    if not request.user.is_authenticated:
+        raise Http404
+
     instance = get_object_or_404(Post, slug=slug)
     instance.delete()
     messages.success(request, "Successfuly Deleted")
