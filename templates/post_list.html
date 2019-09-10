@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
     <div class="container m-3 p-2">
@@ -15,10 +16,30 @@
                 <a href="{% url 'posts:detail' object.id %}" class="btn btn-primary">View</a>
             </div>
             <div class="card-footer">
-              <small class="text-muted">Created at :  {{ object.timestamp }}</small>
+              <small class="text-muted">Created at :  {{ object.timestamp|naturaltime }}</small>
             </div>
           </div>
         </div>
     {% endfor %}
+
+    <div class="mx-auto">
+        <div class="pagination mt-3 mb-3">
+            <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}=1">&laquo; first</a>
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                </span>
+
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                    <a href="?{{ page_request_var }}={{ object_list.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
     </div>
 {% endblock content %}

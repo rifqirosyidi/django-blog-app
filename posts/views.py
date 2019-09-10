@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator
 
 from .models import Post
 from .forms import PostForm
@@ -42,24 +42,19 @@ def post_detail(request, id):
 
 
 def post_list(request):
-    query_set = Post.objects.all()
+    query_list = Post.objects.all().order_by('-timestamp')
+    paginator = Paginator(query_list, 5)
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    query_set = paginator.get_page(page)
 
     context = {
             "title": "My User List",
-            "object_list": query_set
+            "object_list": query_set,
+            "page_request_var": page_request_var
         }
 
-    # if request.user.is_authenticated:
-    #     context = {
-    #         "title": "My User List"
-    #     }
-    # else:
-    #     context = {
-    #         "title": "List"
-    #     }
-
     return render(request, 'post_list.html', context)
-    # return HttpResponse('List')
 
 
 def post_update(request, id):
