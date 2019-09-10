@@ -13,9 +13,9 @@
             <img src="{{ object.image.url }}" class="card-img-top" alt="...">
             {% endif %}
             <div class="card-body">
-                <h5 class="card-title"><a href="{% url 'posts:detail' object.id %}">{{ object.title }}</a></h5>
+                <h5 class="card-title"><a href="{% url 'posts:detail' object.slug %}">{{ object.title }}</a></h5>
                 <p class="card-text">{{ object.content|linebreaks|truncatechars:70 }}</p>
-                <a href="{% url 'posts:detail' object.id %}" class="btn btn-primary">View</a>
+                <a href="{% url 'posts:detail' object.slug %}" class="btn btn-primary">View</a>
             </div>
             <div class="card-footer">
                 <small class="text-muted">Created at : {{ object.timestamp|naturaltime }}</small>
@@ -23,9 +23,9 @@
         </div>
     </div>
     {% endfor %}
-
+</div>
     <div class="mx-auto">
-        <div class="pagination mt-3 mb-3">
+        <div class="pagination centering mt-3 mb-3">
             <span class="step-links">
                 {% if object_list.has_previous %}
                     <a href="?{{ page_request_var }}=1">&laquo; first</a>
@@ -42,6 +42,5 @@
                 {% endif %}
             </span>
         </div>
-    </div>
     </div>
 {% endblock content %}

@@ -1,3 +1,4 @@
+from urllib.parse import quote_plus
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
@@ -16,7 +17,7 @@ def post_create(request):
         # or you can use form.cleaned_data.get('field')
         instance.save()
         messages.success(request, "Successfuly Created")
-        return HttpResponseRedirect(f'/posts/{instance.id}/')
+        return HttpResponseRedirect(f'/posts/{instance.slug}/')
 
     # Capture The Data From the Form (Not Recommend .. add request.POST to PostForm(...) is sugested)
     # if request.method == 'POST':
@@ -29,14 +30,16 @@ def post_create(request):
     return render(request, 'post_form.html', context)
 
 
-def post_detail(request, id):
+def post_detail(request, slug):
     # this instance will raise an error , we dont want that so, use get_object_or_404
     # instance = Post.objects.get(id=99)
 
-    instance = get_object_or_404(Post, id=id)  # This will return 404 page default. id not found, not an error
+    instance = get_object_or_404(Post, slug=slug)  # This will return 404 page default. id not found, not an error
+    share_string = quote_plus(instance.content)
     context = {
         "title": instance.title,
-        "instance": instance
+        "instance": instance,
+        "share_string": share_string,
     }
     return render(request, 'post_detail.html', context)
     # return HttpResponse('Detail')
@@ -58,14 +61,14 @@ def post_list(request):
     return render(request, 'post_list.html', context)
 
 
-def post_update(request, id):
-    instance = get_object_or_404(Post, id=id)
+def post_update(request, slug):
+    instance = get_object_or_404(Post, slug=slug)
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
         messages.success(request, "Post Updated")
-        return HttpResponseRedirect(f'/posts/{instance.id}/')
+        return HttpResponseRedirect(f'/posts/{instance.slug}/')
 
     context = {
         "title": instance.title,
@@ -75,8 +78,8 @@ def post_update(request, id):
     return render(request, 'post_form.html', context)
 
 
-def post_delete(request, id):
-    instance = get_object_or_404(Post, id=id)
+def post_delete(request, slug):
+    instance = get_object_or_404(Post, slug=slug)
     instance.delete()
     messages.success(request, "Successfuly Deleted")
     return redirect('posts:list')
